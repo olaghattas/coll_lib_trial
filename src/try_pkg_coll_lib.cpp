@@ -18,7 +18,7 @@ struct Particle {
 int main() {
     // Your program's code here
     std::string directoryPath = "/home/olagh/Desktop/collisionpts_hewitthall/";
-    int num_particles = 900;
+    int num_particles = 256;
     std::vector<Particle> particles;
 
     std::pair<double, double> x_bound = std::make_pair(-5, 5.0);
@@ -51,7 +51,7 @@ int main() {
 
     if (!network ){
         std::cout << "Network pointer is empty." << std::endl;
-        network = check_collision_training(features_inf, directoryPath);}
+        network = check_collision_training(directoryPath);}
 
         nlohmann::json jsonArray;
         std::ifstream inputFile(path);
