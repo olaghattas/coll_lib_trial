@@ -12,6 +12,8 @@
 
   <depend>rclcpp_components</depend>
   <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>visualization_msgs</depend>
   <depend>collision_lib</depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

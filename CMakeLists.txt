@@ -13,6 +13,8 @@ find_package(CUDA REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(ros2-tiny-cuda-nn REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -21,7 +23,8 @@ set(dependencies
         rclcpp
         ament_index_cpp
         collision_lib
-
+        visualization_msgs
+        sensor_msgs
 )
 
 # Add executable
@@ -33,6 +36,32 @@ ament_target_dependencies(try_pkg_coll_lib ros2-tiny-cuda-nn)
 target_link_libraries(try_pkg_coll_lib ${ros2-tiny-cuda-nn_LIBRARIES})
 
 target_include_directories(try_pkg_coll_lib PUBLIC
+        ${CUDA_INCLUDE_DIRS}
+        ${ros2-tiny-cuda-nn_INCLUDE_DIR}
+)
+
+# Add executable
+add_executable(try_pkg_coll_lib_inf src/try_pkg_coll_lib_inf.cpp)
+ament_target_dependencies(try_pkg_coll_lib_inf ${dependencies})
+#target_link_libraries(particle_filter  collision_lib)
+
+ament_target_dependencies(try_pkg_coll_lib_inf ros2-tiny-cuda-nn)
+target_link_libraries(try_pkg_coll_lib_inf ${ros2-tiny-cuda-nn_LIBRARIES})
+
+target_include_directories(try_pkg_coll_lib_inf PUBLIC
+        ${CUDA_INCLUDE_DIRS}
+        ${ros2-tiny-cuda-nn_INCLUDE_DIR}
+)
+
+# Add executable
+add_executable(try_pkg_coll_lib_inf_only src/try_pkg_coll_lib_inf_only.cpp)
+ament_target_dependencies(try_pkg_coll_lib_inf_only ${dependencies})
+#target_link_libraries(particle_filter  collision_lib)
+
+ament_target_dependencies(try_pkg_coll_lib_inf_only ros2-tiny-cuda-nn)
+target_link_libraries(try_pkg_coll_lib_inf_only ${ros2-tiny-cuda-nn_LIBRARIES})
+
+target_include_directories(try_pkg_coll_lib_inf_only PUBLIC
         ${CUDA_INCLUDE_DIRS}
         ${ros2-tiny-cuda-nn_INCLUDE_DIR}
 )

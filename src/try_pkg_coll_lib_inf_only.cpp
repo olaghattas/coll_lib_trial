@@ -13,6 +13,7 @@
 //#include "visualization_msgs/msg/marker_array.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include <sensor_msgs/msg/point_cloud2.hpp>
+
 struct Particle {
     int id;
     double x;
@@ -29,8 +30,8 @@ int main(int argc, char *argv[]) {
     auto pub_ = node->create_publisher<sensor_msgs::msg::PointCloud2>("point_cloud", 10);
 
     // Your program's code here
-    std::string directoryPath = "/home/olagh/Desktop/collision_door/";
-//    std::string directoryPath = "/home/olagh/Desktop/collisionpts_hewitthall/";
+//    std::string directoryPath = "/home/olagh/Desktop/collision_door/";
+    std::string directoryPath = "/home/olagh/particle_filter/src/particle_filter/collision_points/collisionpts_hewitthall/";
 
     int num_particles = 256 * 5;
     std::vector<Particle> particles;
@@ -63,11 +64,29 @@ int main(int argc, char *argv[]) {
     }
 
     std::string path = "/home/olagh/particle_filter/src/neural_collision/collision_lib/config/output.json";
-    tcnn::cpp::Module *network = nullptr;
+    bool network = false;
 
     // Calculate the new size that's divisible by 128
-    for (int i =0; i<3; i++) {
-    check_collision( directoryPath, node, pub_);
+    for (int i = 0; i < 3; i++) {
+        if (!network) {
+            std::cout << "Network pointer is empty." << std::endl;
+            check_collision_training(directoryPath, 3);
+            network = true;
+        }
+
+        nlohmann::json jsonArray;
+        std::ifstream inputFile(path);
+        if (inputFile.is_open()) {
+            inputFile >> jsonArray;
+            inputFile.close();
+        } else {
+            std::cerr << "Unable to open output.json for reading" << std::endl;
+        }
+        std::vector<float> floatVector = jsonArray.get<std::vector<float>>();
+        for (int i = 0; i < 20; i++) {
+            check_collision_inf(features_inf, targets_inf, 6, 3, path ,floatVector);
+            std::cout << "pub" << std::endl;
+        }
     }
     return 0;  // Return 0 to indicate successful execution
 }
